@@ -14,9 +14,7 @@ modeling complex rhythms with multiple periodicities.
 
 import numpy as np
 from scipy import stats
-from scipy.optimize import curve_fit
 from typing import Dict, List, Tuple, Optional
-import warnings
 
 
 class CosinorAnalysis:

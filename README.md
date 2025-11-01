@@ -38,7 +38,10 @@ from cosinor_analysis import analyze_actigraphy_data, analyze_melatonin_data
 
 # Example with actigraphy data
 time = np.linspace(0, 168, 168)  # 7 days, hourly sampling
-activity = # your activity counts here
+# Load your activity counts data (e.g., from CSV file)
+# activity = np.loadtxt('actigraphy_data.csv')
+# Or use synthetic data for testing:
+activity = 100 + 80 * np.cos(2 * np.pi * (time - 14) / 24) + np.random.normal(0, 10, len(time))
 
 results = analyze_actigraphy_data(time, activity, period=24.0, n_components=1)
 print(f"Activity peak at: {results['acrophase_hours']:.2f} hours")
