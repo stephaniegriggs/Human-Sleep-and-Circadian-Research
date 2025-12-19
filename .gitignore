@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Generated data files
+*.csv
+
+# Generated plots
+*.png
+*.jpg
+*.jpeg
+*.pdf
+
+# R
+.Rhistory
+.RData
+.Rproj.user
