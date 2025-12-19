@@ -369,8 +369,11 @@ REGRESSION
   /METHOD=ENTER Precision
   /SAVE PRED RESID.
 
-* Note: A significant intercept (p < 0.10) suggests funnel plot asymmetry,
+* Note: Review the Coefficients table in the output.
+*       Check the p-value (Sig.) for the (Constant) row.
+*       A significant intercept (p < 0.10) suggests funnel plot asymmetry,
 *       which may indicate publication bias.
+*       Small-study effects are suggested when p < 0.10.
 
 * -----------------------------------------------------------------------------.
 * SECTION 12: SENSITIVITY ANALYSIS (OPTIONAL)

@@ -138,8 +138,13 @@ EXECUTE.
 If heterogeneity is significant (Q p-value < 0.10 or I² > 50%), use random-effects model:
 
 ```spss
+* First calculate sum of squared weights.
+AGGREGATE OUTFILE=* MODE=ADDVARIABLES
+  /BREAK=
+  /Sum_Weight_Squared = SUM(Weight ** 2).
+
 * Calculate between-study variance (tau-squared).
-COMPUTE C = Sum_Weight - (AGGREGATE(SUM(Weight ** 2)) / Sum_Weight).
+COMPUTE C = Sum_Weight - (Sum_Weight_Squared / Sum_Weight).
 COMPUTE Tau_Squared = (Q_Statistic - DF) / C.
 IF (Tau_Squared < 0) Tau_Squared = 0.
 EXECUTE.
@@ -275,18 +280,23 @@ Tests for funnel plot asymmetry:
 
 ```spss
 * Calculate standardized effect and precision.
-COMPUTE Standardized_Effect = FT_Transform / SE.
-COMPUTE Precision = 1 / SE.
+COMPUTE Standardized_Effect = FT_Transform / SQRT(FT_Variance).
+COMPUTE Precision = 1 / SQRT(FT_Variance).
 EXECUTE.
 
 * Regression of standardized effect on precision.
+* A significant intercept (p < 0.10) suggests publication bias.
 REGRESSION
+  /STATISTICS COEFF OUTS R ANOVA
   /DEPENDENT Standardized_Effect
   /METHOD=ENTER Precision
-  /SAVE PRED.
+  /SAVE PRED RESID.
+
+* Note: Check the coefficient table in the output.
+* If the intercept p-value < 0.10, there is evidence of publication bias.
 ```
 
-A significant intercept suggests publication bias.
+Interpret the intercept from the coefficient table: A significant intercept (p < 0.10) suggests publication bias.
 
 ## Reporting Results
 
