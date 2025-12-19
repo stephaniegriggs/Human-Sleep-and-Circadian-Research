@@ -5,9 +5,10 @@
 source("age_stratification.R")
 
 # Load required libraries (install if needed)
-# install.packages(c("dplyr", "ggplot2"))
+# install.packages(c("dplyr", "ggplot2", "tidyr"))
 library(dplyr)
 library(ggplot2)
+library(tidyr)
 
 # ============================================================================
 # STEP 1: Create example sleep and circadian data
@@ -16,23 +17,26 @@ library(ggplot2)
 set.seed(42)
 n <- 100
 
+# Generate ages first
+ages <- round(runif(n, 40, 75))
+
 # Create synthetic dataset representing sleep and circadian measures
 sleep_data <- data.frame(
   participant_id = 1:n,
-  age = round(runif(n, 40, 75)),
+  age = ages,
   
   # Sleep measures (with age-related trends)
-  sleep_efficiency = pmax(50, pmin(100, 88 - 0.15 * (runif(n, 40, 75) - 40) + rnorm(n, 0, 8))),
-  total_sleep_time = pmax(300, 420 - 0.8 * (runif(n, 40, 75) - 40) + rnorm(n, 0, 45)),
-  waso = pmax(0, 25 + 0.5 * (runif(n, 40, 75) - 40) + abs(rnorm(n, 0, 15))),
+  sleep_efficiency = pmax(50, pmin(100, 88 - 0.15 * (ages - 40) + rnorm(n, 0, 8))),
+  total_sleep_time = pmax(300, 420 - 0.8 * (ages - 40) + rnorm(n, 0, 45)),
+  waso = pmax(0, 25 + 0.5 * (ages - 40) + abs(rnorm(n, 0, 15))),
   
   # Circadian measures
-  circadian_phase = 2.5 + 0.02 * (runif(n, 40, 75) - 40) + rnorm(n, 0, 1.2),
-  amplitude = pmax(0.1, 0.8 - 0.006 * (runif(n, 40, 75) - 40) + abs(rnorm(n, 0, 0.15))),
+  circadian_phase = 2.5 + 0.02 * (ages - 40) + rnorm(n, 0, 1.2),
+  amplitude = pmax(0.1, 0.8 - 0.006 * (ages - 40) + abs(rnorm(n, 0, 0.15))),
   
   # Biological measures
-  fasting_glucose = pmax(70, 92 + 0.3 * (runif(n, 40, 75) - 40) + rnorm(n, 0, 10)),
-  cortisol_awakening = pmax(5, 18 - 0.08 * (runif(n, 40, 75) - 40) + rnorm(n, 0, 4))
+  fasting_glucose = pmax(70, 92 + 0.3 * (ages - 40) + rnorm(n, 0, 10)),
+  cortisol_awakening = pmax(5, 18 - 0.08 * (ages - 40) + rnorm(n, 0, 4))
 )
 
 # ============================================================================
